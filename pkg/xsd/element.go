@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/iancoleman/strcase"
 )
@@ -62,7 +63,8 @@ func (e *Element) GoMemLayout() string {
 	if e.isArray() {
 		return "[]"
 	}
-	if (e.MaxOccurs == "1" || e.MaxOccurs == "") && e.MinOccurs == "0" && e.GoTypeName() != "string" {
+	//决定是否生成类型时加上引用符号*
+	if (e.MaxOccurs == "1" || e.MaxOccurs == "") && e.MinOccurs == "0" && !IsBasicType(e.GoTypeName()) { //e.GoTypeName() != "string" {
 		return "*"
 	}
 	return ""
@@ -162,6 +164,9 @@ func (e *Element) prefixNameWithParent(parentElement *Element) {
 	// In case there are inlined xsd:elements within another xsd:elements, it may happen that two top-level xsd:elements
 	// define child xsd:element of a same name. In such case, we need to override children name to avoid name clashes.
 	if parentElement != nil {
-		e.nameOverride = fmt.Sprintf("%s-%s", parentElement.GoName(), e.GoName())
+		if !strings.HasPrefix(e.GoName(), parentElement.GoName()) {
+			e.nameOverride = fmt.Sprintf("%s-%s", parentElement.GoName(), e.GoName())
+		}
+
 	}
 }

@@ -37,3 +37,26 @@ git clone --depth 1 https://github.com/openscap/openscap
 ```
 go get -u -v github.com/gocomply/xsd2go/cli/gocomply_xsd2go
 ```
+
+
+## 原项目的一个缺点是无法支持在sequence上设置列表类型。比如下面的描述无法正确转换。
+```
+<xs:element name="GBSeq_feature-table" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="GBFeature"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+```
+
+
+## 重新生成types.tmpl
+修改types.tmpl，删除生成代码形成的空行
+```
+go install github.com/markbates/pkger/cmd/pkger@latest
+
+//这样对types.tmpl修改才会生效
+pkger -o /pkg/template
+
+```

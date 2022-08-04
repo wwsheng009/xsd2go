@@ -11,20 +11,11 @@ import (
 {{range .ExportableElements }}
   // Element
   type {{ .GoName }} struct {
-    XMLName xml.Name `xml:"{{.Name}}"`
-    {{ range .Attributes }}
-        {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
-    {{end }}
-
-    {{ range .Elements }}
-      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
-    {{ end }}
-
-    {{- if .ContainsText }}
-      Text string `xml:",chardata"`
-    {{- end}}
+    XMLName xml.Name `xml:"{{.Name}}"`{{ range .Attributes }}
+      {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`{{end }}{{ range .Elements }}
+      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`{{ end }}{{- if .ContainsText }}
+      Text string `xml:",chardata"`{{- end}}
   }
-
 {{end}}
 
 
@@ -32,19 +23,10 @@ import (
 {{range .ExportableComplexTypes }}
   type {{ .GoName }} struct {
   {{- if not .HasXmlNameAttribute }}
-    XMLName xml.Name
-  {{- end}}
-  {{ range .Attributes }}
-      {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
-  {{end }}
-
-  {{ range .Elements }}
-    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
-  {{end}}
-
-  {{- if .ContainsText }}
-    Text string `xml:",chardata"`
-  {{- end}}
+    XMLName xml.Name{{- end}}{{ range .Attributes }}
+      {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`{{end }}{{ range .Elements }}
+    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`{{end}}{{- if .ContainsText }}
+    Text string `xml:",chardata"`{{- end}}
   InnerXml string `xml:",innerxml"`
   }
 {{end}}
@@ -52,10 +34,8 @@ import (
 // XSD SimpleType declarations
 {{range .ExportableSimpleTypes }}
   type {{ .GoName }} {{ .GoTypeName }}
-
   {{ $simpleType := . }}
   {{ range .Enums }}
   const {{ $simpleType.GoName -}} {{- .GoName }} {{ $simpleType.GoName }} = "{{ .XmlName }}"
   {{end }}
-
 {{end}}

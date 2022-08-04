@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wmh="http://www.wmhelp.com/2003/eGenerator" elementFormDefault="qualified" targetNamespace="www.mml.com" xmlns="www.mml.com" xmlns:ext="www.ali.com">
+<xs:element name="piecewise">
+    <xs:complexType>
+      <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+<xs:element name="apply">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:element ref="piecewise"/>
+          
+        </xs:choice>
+        
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="piecewise"/>
+          
+        </xs:choice>
+      </xs:sequence>
+      
+    </xs:complexType>
+  </xs:element>
+  </xs:schema>

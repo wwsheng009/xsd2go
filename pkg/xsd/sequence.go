@@ -38,6 +38,7 @@ func (s *Sequence) compile(sch *Schema, parentElement *Element) {
 
 		s.allElements = append(s.allElements, c.Elements()...)
 	}
+	s.allElements = deduplicateElements(s.allElements) //remove duplicate elements
 }
 
 type SequenceAll struct {
@@ -64,4 +65,5 @@ func (s *SequenceAll) compile(sch *Schema, parentElement *Element) {
 
 		s.allElements = append(s.allElements, c.Elements()...)
 	}
+	s.allElements = deduplicateElements(s.allElements) //remove duplicate elements
 }

@@ -268,6 +268,13 @@ var staticTypes = map[string]staticType{
 	"unsignedInt":        "uint64",
 }
 
+func IsBasicType(t1 string) bool {
+	switch t1 {
+	case "string", "int", "int64", "float64", "bool", "uint64":
+		return true
+	}
+	return false
+}
 func StaticType(name string) staticType {
 	typ, found := staticTypes[name]
 	if found {
